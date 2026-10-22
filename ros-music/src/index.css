@@ -1,4 +1,4 @@
-/* ─── Gesture Synth Weld — Liquid Glass Theme ──────────────────────── */
+/* ─── Musica — Liquid Glass Theme ───────────────────────────────────── */
 
 :root {
   --bg-primary: #1a0a14;
@@ -899,6 +899,18 @@ body {
   margin-right: 8px;
   letter-spacing: 0.05em;
   opacity: 0.8;
+}
+
+.brand.musica-brand {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(255, 110, 180, 0.5);
 }
 
 .frost-toolbar button,
