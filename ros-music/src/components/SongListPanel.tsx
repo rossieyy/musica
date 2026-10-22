@@ -8,7 +8,7 @@
  * No paywall, no login, no lock icons — everything is free.
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SONGS,
   DIFFICULTY_LABEL,
@@ -39,20 +39,18 @@ export interface SongListPanelProps {
   onLoadSong: (song: GuidedSong) => void;
   /** Currently active song id (highlighted in the list). */
   activeSongId: string | null;
+  /** Current chord step (owned by App, shared with SongOverlay). */
+  songStep: number;
+  onStepChange: (step: number) => void;
   onClose: () => void;
 }
 
-export function SongListPanel({ onLoadSong, activeSongId, onClose }: SongListPanelProps) {
+export function SongListPanel({ onLoadSong, activeSongId, songStep, onStepChange, onClose }: SongListPanelProps) {
   const [expandedId, setExpandedId] = useState<string | null>(activeSongId);
   const activeSong = SONGS.find((s) => s.id === activeSongId) ?? null;
-  const [guideStep, setGuideStep] = useState(0);
-  const stepRef = useRef(guideStep);
-  stepRef.current = guideStep;
-
-  // Reset step when active song changes
-  useEffect(() => {
-    setGuideStep(0);
-  }, [activeSongId]);
+  // Use the App-owned step (shared with SongOverlay)
+  const guideStep = songStep;
+  const setGuideStep = onStepChange;
 
   // Auto-expand the active song
   useEffect(() => {
@@ -136,7 +134,7 @@ export function SongListPanel({ onLoadSong, activeSongId, onClose }: SongListPan
               <div className="song-guide-nav">
                 <button
                   className="song-guide-nav-btn"
-                  onClick={() => setGuideStep((s) => Math.max(0, s - 1))}
+                  onClick={() => setGuideStep(Math.max(0, guideStep - 1))}
                   disabled={guideStep === 0}
                 >←</button>
                 <span className="song-guide-nav-pos">
@@ -144,7 +142,7 @@ export function SongListPanel({ onLoadSong, activeSongId, onClose }: SongListPan
                 </span>
                 <button
                   className="song-guide-nav-btn"
-                  onClick={() => setGuideStep((s) => Math.min(activeSong.chords.length - 1, s + 1))}
+                  onClick={() => setGuideStep(Math.min(activeSong.chords.length - 1, guideStep + 1))}
                   disabled={guideStep === activeSong.chords.length - 1}
                 >→</button>
               </div>

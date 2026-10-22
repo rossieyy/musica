@@ -2954,3 +2954,215 @@ body {
 /* ── Song list toolbar button ────────────────────────────────────────── */
 /* Reuses .icon-btn from the existing toolbar; the music-note SVG inside
    provides the visual identity — no extra class needed. */
+
+/* ─── Song Overlay — top-center chord guide over the camera view ──────── */
+
+.song-ov-wrap {
+  position: absolute;
+  top: 64px;          /* just below the toolbar */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  width: min(500px, 92vw);
+  background: rgba(10, 5, 16, 0.82);
+  border: 1px solid rgba(255, 110, 180, 0.22);
+  border-radius: 16px;
+  backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,110,180,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 14px 8px;
+  pointer-events: all;
+}
+
+/* Header */
+.song-ov-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.song-ov-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--neon-cyan);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+.song-ov-key {
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.song-ov-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0 4px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color 0.12s;
+}
+.song-ov-close:hover { color: var(--neon-magenta); }
+
+/* Big current chord block */
+.song-ov-current {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.song-ov-big {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: rgba(255, 110, 180, 0.1);
+  border: 2px solid rgba(255, 110, 180, 0.3);
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.song-ov-big--match {
+  background: rgba(0, 255, 204, 0.15);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 18px rgba(0, 255, 204, 0.35);
+}
+.song-ov-big-roman {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+.song-ov-big--match .song-ov-big-roman { color: var(--neon-cyan); }
+.song-ov-big-note {
+  font-family: var(--font-mono);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  line-height: 1.1;
+}
+.song-ov-hint {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.song-ov-beats {
+  color: var(--text-muted);
+  font-size: 0.64rem;
+}
+
+/* Scrolling chip row */
+.song-ov-chips-row {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 2px 0 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,110,180,0.25) transparent;
+}
+.song-ov-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.04);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.58rem;
+  flex-shrink: 0;
+  gap: 1px;
+  transition: all 0.1s;
+  padding: 0 4px;
+}
+.song-ov-chip:hover {
+  border-color: rgba(255,110,180,0.3);
+  color: var(--text-secondary);
+}
+.song-ov-chip--active {
+  background: rgba(0, 255, 204, 0.14);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+}
+.song-ov-chip--done {
+  opacity: 0.38;
+  background: rgba(255, 110, 180, 0.05);
+  border-color: rgba(255, 110, 180, 0.12);
+}
+.song-ov-chip--next {
+  border-color: rgba(255, 200, 80, 0.4);
+  color: rgba(255, 200, 80, 0.8);
+}
+.song-ov-chip-roman {
+  font-size: 0.58rem;
+  font-family: var(--font-display);
+  line-height: 1;
+}
+.song-ov-chip-note {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* Navigation row */
+.song-ov-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.song-ov-nav-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 7px;
+  width: 30px;
+  height: 26px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.12s;
+}
+.song-ov-nav-btn:hover:not(:disabled) {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+.song-ov-nav-btn:disabled { opacity: 0.25; cursor: default; }
+.song-ov-nav-pos {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  min-width: 44px;
+  text-align: center;
+}
+
+/* Mobile: tighter sizing */
+@media (max-width: 480px) {
+  .song-ov-wrap {
+    top: 56px;
+    padding: 8px 10px 6px;
+    border-radius: 12px;
+  }
+  .song-ov-big { min-width: 52px; padding: 4px 8px; }
+  .song-ov-big-note { font-size: 1.15rem; }
+  .song-ov-chip { min-width: 30px; height: 38px; }
+}

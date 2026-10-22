@@ -28,7 +28,8 @@ import { RECORD_SECONDS, VIDEO_REC_SUPPORTED } from './recording/constants';
 import { WHATS_NEW, whatsNewActive, whatsNewDismissed, markWhatsNewDismissed } from './whatsNew';
 import WorksPanel, { RecordingsEntry, RecordingsIcon } from './components/WorksPanel';
 import { SongListPanel } from './components/SongListPanel';
-import type { GuidedSong } from './songs/songList';
+import { SongOverlay } from './components/SongOverlay';
+import { SONGS, type GuidedSong } from './songs/songList';
 import { deleteWork, listWorks, type StoredWork } from './works/workStore';
 import {
   DIATONIC_CHORDS,
@@ -207,10 +208,12 @@ export default function App() {
   // ─── Song List Panel ──────────────────────────────────────────────────
   const [showSongList, setShowSongList] = useState(false);
   const [activeSongId, setActiveSongId] = useState<string | null>(null);
+  const [songStep, setSongStep] = useState(0);
 
   /** Load a guided song: apply its key + scale mode, then show the guide. */
   const handleLoadSong = useCallback((song: GuidedSong) => {
     setActiveSongId(song.id);
+    setSongStep(0);
     // Apply the song's key and scale to the synth
     setSynthState((prev) => ({
       ...prev,
@@ -219,6 +222,8 @@ export default function App() {
       mode: song.scaleMode === 'minor' ? 'diatonicMinor' : 'diatonicMajor',
       leftHandMode: 'scaleLocked',
     }));
+    // Close the panel so the camera is fully visible
+    setShowSongList(false);
   }, []);
 
   // ─── Onboarding (first visit) ─────────────────────────────────────────
@@ -2029,9 +2034,28 @@ export default function App() {
           <SongListPanel
             onLoadSong={handleLoadSong}
             activeSongId={activeSongId}
+            songStep={songStep}
+            onStepChange={setSongStep}
             onClose={() => setShowSongList(false)}
           />
         )}
+
+        {/* ─── Song Overlay — chord guide at top center while a song is
+                active. Shows regardless of whether the panel is open
+                so the player keeps the guide visible while playing. ── */}
+        {activeSongId && isRunning && (() => {
+          const song = SONGS.find((s) => s.id === activeSongId);
+          if (!song) return null;
+          return (
+            <SongOverlay
+              song={song}
+              step={songStep}
+              onStepChange={setSongStep}
+              onClose={() => setActiveSongId(null)}
+              currentDegree={synthState.isPlaying ? synthState.chordIndex : null}
+            />
+          );
+        })()}
 
         {/* ─── Onboarding: hands-ready badge (first stable two-hand
                 detection, once per session, 3s) ───────────────────── */}
