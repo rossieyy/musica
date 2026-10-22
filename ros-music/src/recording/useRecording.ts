@@ -36,7 +36,7 @@ import { makeCoverBlob, pickRecMimeType } from './utils';
 /** Brand caption for sharing (2026-10-07): used by the mobile share sheet
  *  AND the desktop copy-caption button — one string, one voice. */
 export const POST_CAPTION =
-  'I just played this with Gesture Synth 🎹 — play music with hand gestures. gesturesynthweld.com | created by Roschel';
+  'I just played this with Musica 🎹 — play music with hand gestures. musica.app | created by Roschel';
 
 export interface UseRecordingDeps {
   isRunning: boolean;
@@ -300,7 +300,7 @@ export function useRecording(deps: UseRecordingDeps) {
     try {
       await navigator.share({
         files: [file],
-        title: 'Gesture Synth Weld — hand gesture music synthesizer',
+        title: 'Musica — hand gesture music synthesizer',
         text: brandText,
       });
       setShareFailed(false);
@@ -314,9 +314,9 @@ export function useRecording(deps: UseRecordingDeps) {
       // the brand message still reaches the share sheet.
       try {
         await navigator.share({
-          title: 'Gesture Synth Weld — hand gesture music synthesizer',
+          title: 'Musica — hand gesture music synthesizer',
           text: brandText,
-          url: 'https://gesturesynthweld.com | created by Roschel',
+          url: 'https://musica.app | created by Roschel',
         });
         setShareFailed(false);
         trackShare('success', 'text');
@@ -475,9 +475,9 @@ export function useRecording(deps: UseRecordingDeps) {
             : undefined;
           blob = await injectBrandTags(
             raw,
-            'Gesture Synth Weld',
-            'gesturesynthweld.com | created by Roschel',
-            'Created by Roschel — Gesture Synth — gesturesynthweld.com | created by Roschel · pro: gesturesynthweld.app',
+            'Musica',
+            'musica.app | created by Roschel',
+            'Created by Roschel — Musica — musica.app | created by Roschel · pro: musica.app',
             cover
           );
         }

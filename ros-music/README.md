@@ -1,11 +1,11 @@
-# Gesture Synth Weld 🎹
+# Musica 🎹
 
 **Play music with your hands — an open-source hand-tracking chord synth for the browser.**
 
-![Live](https://gesturesynthweld.com)
+![Live](https://musica.app)
 ![License: MIT](./LICENSE)
 
-> **Hosted Pro version → [gesturesynthweld.app](https://gesturesynthweld.app/?utm_source=free-site&utm_medium=readme&utm_campaign=wave-2026-10&utm_content=readme)** — the same instrument, hosted, for taking work out of the browser. This repo stays the free, MIT-licensed build.
+> **Hosted Pro version → [musica.app](https://musica.app/?utm_source=free-site&utm_medium=readme&utm_campaign=wave-2026-10&utm_content=readme)** — the same instrument, hosted, for taking work out of the browser. This repo stays the free, MIT-licensed build.
 
 ## ✨ Features
 
@@ -19,13 +19,13 @@
 
 ## 🚀 Try It
 
-👉 [gesturesynthweld.com](https://gesturesynthweld.com) — free, no sign-up, nothing to install.
+👉 [musica.app](https://musica.app) — free, no sign-up, nothing to install.
 
 ### What the hosted Pro version adds
 
 Everything below is optional — the free build above stays free, ungated (no login, no paywall)
 and MIT-licensed. The
-[hosted Pro build](https://gesturesynthweld.app/?utm_source=free-site&utm_medium=readme&utm_campaign=wave-2026-10&utm_content=readme)
+[hosted Pro build](https://musica.app/?utm_source=free-site&utm_medium=readme&utm_campaign=wave-2026-10&utm_content=readme)
 is a separate, closed-source deployment that adds:
 
 - **Realtime MIDI out** — play the instrument straight into a DAW.
@@ -94,9 +94,9 @@ npm install
 npm run dev
 ```
 
-The deployed version at gesturesynthweld.com includes hosting-related disclosures in its FAQ and a reserved, non-intrusive below-fold ad slot (no ads currently serving).
+The deployed version at musica.app includes hosting-related disclosures in its FAQ and a reserved, non-intrusive below-fold ad slot (no ads currently serving).
 
 ## 🔗 Related
 
-- [gesturesynthweld.app](https://gesturesynthweld.app/?utm_source=free-site&utm_medium=readme&utm_campaign=wave-2026-10&utm_content=readme) — hosted Pro build (separate site, closed source)
-- [Guide](https://gesturesynthweld.com/guide) — how to play, chord progressions and FAQ
+- [musica.app](https://musica.app/?utm_source=free-site&utm_medium=readme&utm_campaign=wave-2026-10&utm_content=readme) — hosted Pro build (separate site, closed source)
+- [Guide](https://musica.app/guide) — how to play, chord progressions and FAQ

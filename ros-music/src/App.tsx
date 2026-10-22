@@ -81,7 +81,7 @@ import { AFFILIATE_CARD_URL, ENABLE_AFFILIATE_CARD } from './config';
  * (2026-08-10) — the live set lives in the mappedKeysRef declared inside
  * the component (derived from `keymap`), not a static list here. */
 
-/* ─── Gesture Synth Weld — Two-Hand Division System ─────────────────── */
+/* ─── Musica — Two-Hand Division System ──────────────────────────────── */
 
 // Recording domain: constants (RECORD_SECONDS, VIDEO_REC_SUPPORTED,
 // REC_RATIO_*, REC_SVG_PREVIEWS) live in src/recording/constants.tsx;
@@ -1740,7 +1740,14 @@ export default function App() {
         {/* ─── Top Toolbar — always visible ─────────────────────────── */}
         <div style={{ position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', zIndex: 20 }}>
           <div className="frost-toolbar" style={{ position: 'relative', top: 'auto', left: 'auto', transform: 'none', gap: '3px', padding: '6px 14px', fontSize: '0.6rem', whiteSpace: 'nowrap', overflow: 'visible' }}>
-            <span className="brand" style={{ fontSize: '0.6rem' }}>Gesture Synth Weld</span>
+            <span className="brand musica-brand">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 18V5l12-2v13" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="6" cy="18" r="3" stroke="currentColor" strokeWidth="2.2" />
+                <circle cx="18" cy="16" r="3" stroke="currentColor" strokeWidth="2.2" />
+              </svg>
+              Musica
+            </span>
             <button className={`mobile-collapse ${synthState.appMode === 'gesture' ? 'active' : ''}`} onClick={() => { trackSettingChanged('app_mode', 'gesture'); setSynthState(prev => ({ ...prev, appMode: 'gesture' })); }} data-tip="Two-hand chord mode — left hand picks harmony, right hand controls expression">Gesture</button>
             <button className={`mobile-collapse ${synthState.appMode === 'theremin' ? 'active' : ''}`} onClick={() => { trackSettingChanged('app_mode', 'theremin'); setSynthState(prev => ({ ...prev, appMode: 'theremin' })); }} data-tip="Theremin mode — right hand Y-axis = pitch, left hand Y-axis = volume">Theremin</button>
             <button className={`mobile-collapse ${synthState.appMode === 'monoPiano' ? 'active' : ''}`} onClick={() => { trackSettingChanged('app_mode', 'monoPiano'); setSynthState(prev => ({ ...prev, appMode: 'monoPiano' })); }} data-tip="Mono Piano mode — finger count selects a single note interval">Piano</button>
@@ -2195,7 +2202,7 @@ export default function App() {
             {/* Brand anchored at a FIXED top position — it never moves
                 when the content below switches between button and block. */}
             <div className="camera-placeholder-brand">
-              <span className="camera-placeholder-brand-text">Gesture Synth</span>
+              <span className="camera-placeholder-brand-text">Musica</span>
               <div style={{ textAlign: 'center', fontSize: '0.7rem', color: 'rgba(255,110,180,0.7)', fontFamily: 'var(--font-body)', marginTop: '4px', letterSpacing: '0.08em' }}>created by Roschel</div>
             </div>
             <div className="camera-placeholder-content">
@@ -2316,7 +2323,7 @@ export default function App() {
         {error && (
           <div className="camera-placeholder error-state">
             <div className="camera-placeholder-brand">
-              <span className="camera-placeholder-brand-text">Gesture Synth</span>
+              <span className="camera-placeholder-brand-text">Musica</span>
               <div style={{ textAlign: 'center', fontSize: '0.7rem', color: 'rgba(255,110,180,0.7)', fontFamily: 'var(--font-body)', marginTop: '4px', letterSpacing: '0.08em' }}>created by Roschel</div>
             </div>
             <div className="camera-error-message">{error}</div>
@@ -2351,7 +2358,7 @@ export default function App() {
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                   </svg>
-                  <span className="err-url">gesturesynthweld.com</span>
+                  <span className="err-url">musica.app</span>
                   <span className="err-dots">⋯</span>
                 </div>
                 <div className="err-steps">

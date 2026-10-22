@@ -2,7 +2,7 @@
  *
  * MediaRecorder output has no metadata, so audio/video files carry no
  * brand. This injects iTunes-style tags (©nam/©ART/©cmt) into the moov
- * box so players show "Gesture Synth Weld — gesturesynthweld.com".
+ * box so players show "Musica — musica.app".
  * No dependencies; verified against the recorder's own output.
  */
 
