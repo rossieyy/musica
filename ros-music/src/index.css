@@ -2595,3 +2595,362 @@ body {
 .rec-works-icon { font-size: 0.8rem; }
 .rec-works-date { font-family: var(--font-mono); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rec-works-dur { color: var(--text-muted); font-size: 0.6rem; }
+
+
+/* ─── Song List Panel ────────────────────────────────────────────────── */
+
+/* Full-screen overlay (same pattern as works-modal-overlay) */
+.song-panel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 120;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 60px;
+  padding-bottom: 20px;
+}
+
+/* Panel card */
+.song-panel {
+  background: var(--panel-deep-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 110, 180, 0.06);
+  width: min(520px, 94vw);
+  max-height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: var(--frost-blur);
+}
+
+/* Header */
+.song-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid var(--glass-border);
+  flex-shrink: 0;
+}
+.song-panel-head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--neon-cyan);
+}
+.song-panel-title {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+.song-panel-subtitle {
+  font-size: 0.62rem;
+  color: var(--neon-cyan);
+  opacity: 0.7;
+  margin-left: 2px;
+}
+.song-panel-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+}
+.song-panel-close:hover { color: var(--text-primary); background: rgba(255,255,255,0.06); }
+
+/* ── Active guide strip ──────────────────────────────────────────────── */
+.song-guide-strip {
+  flex-shrink: 0;
+  background: rgba(0, 255, 204, 0.04);
+  border-bottom: 1px solid rgba(0, 255, 204, 0.15);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.song-guide-strip-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.song-guide-now-playing {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  color: var(--neon-cyan);
+  letter-spacing: 0.06em;
+}
+.song-guide-meta {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+}
+.song-guide-tip {
+  font-size: 0.64rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Chord step chips (scrollable row) */
+.song-guide-steps {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,110,180,0.3) transparent;
+}
+.song-guide-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.6rem;
+  font-family: var(--font-mono);
+  padding: 0 4px;
+  flex-shrink: 0;
+  transition: all 0.12s;
+}
+.song-guide-step:hover {
+  border-color: rgba(255,110,180,0.35);
+  color: var(--text-secondary);
+}
+.song-guide-step.active {
+  background: rgba(0, 255, 204, 0.12);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+}
+.song-guide-step.done {
+  background: rgba(255,110,180,0.06);
+  border-color: rgba(255,110,180,0.2);
+  color: rgba(255,110,180,0.5);
+}
+.song-guide-step-roman {
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.song-guide-step-beats {
+  font-size: 0.48rem;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+/* Current step detail row */
+.song-guide-current {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.song-guide-current-degree {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  color: var(--neon-cyan);
+}
+.song-guide-current-hand {
+  font-size: 0.64rem;
+  color: var(--text-secondary);
+  flex: 1;
+}
+.song-guide-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.song-guide-nav-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.12s;
+}
+.song-guide-nav-btn:hover:not(:disabled) {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+.song-guide-nav-btn:disabled { opacity: 0.3; cursor: default; }
+.song-guide-nav-pos {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  min-width: 40px;
+  text-align: center;
+}
+
+/* ── Song list scrollable area ───────────────────────────────────────── */
+.song-list-scroll {
+  overflow-y: auto;
+  flex: 1;
+  padding: 8px 0 16px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,110,180,0.3) transparent;
+}
+
+/* Difficulty group heading */
+.song-group { margin-bottom: 4px; }
+.song-group-label {
+  font-family: var(--font-display);
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 18px 4px;
+  opacity: 0.85;
+}
+
+/* Song row */
+.song-item {
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.12s;
+}
+.song-item--active {
+  background: rgba(0, 255, 204, 0.04);
+}
+.song-item-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--text-primary);
+  transition: background 0.12s;
+}
+.song-item-header:hover { background: rgba(255,255,255,0.03); }
+.song-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.song-item-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.song-item-desc {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.song-item-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.song-item-key {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+.song-item-chevron {
+  font-size: 0.5rem;
+  color: var(--text-muted);
+  width: 12px;
+  text-align: center;
+}
+
+/* Expanded body */
+.song-item-body {
+  padding: 0 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: song-expand 0.15s ease;
+}
+@keyframes song-expand {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.song-item-detail-row {
+  display: flex;
+  gap: 12px;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+}
+
+/* Chord preview chips */
+.song-item-chord-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.song-chord-chip {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-secondary);
+}
+.song-chord-more {
+  color: var(--text-muted);
+  border-style: dashed;
+}
+
+/* Play button */
+.song-play-btn {
+  align-self: flex-start;
+  background: rgba(255, 110, 180, 0.1);
+  border: 1px solid rgba(255, 110, 180, 0.35);
+  color: var(--neon-cyan);
+  border-radius: 8px;
+  padding: 6px 18px;
+  font-size: 0.7rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.song-play-btn:hover {
+  background: rgba(255, 110, 180, 0.2);
+  border-color: var(--neon-magenta);
+  box-shadow: 0 0 14px rgba(255, 110, 180, 0.25);
+}
+.song-play-btn--active {
+  background: rgba(0, 255, 204, 0.1);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 255, 204, 0.2);
+}
+
+/* ── Song list toolbar button ────────────────────────────────────────── */
+/* Reuses .icon-btn from the existing toolbar; the music-note SVG inside
+   provides the visual identity — no extra class needed. */

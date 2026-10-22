@@ -15,9 +15,6 @@ import type { StoredWork } from '../works/workStore';
 import {
   trackDownload,
   trackMicToggled,
-  trackProGateClicked,
-  trackProGateOutbound,
-  trackProGateSeen,
   trackRecordingModeChanged,
   trackSettingChanged,
   trackWorkDeleted,
@@ -25,7 +22,6 @@ import {
   trackWorkReplayed,
   trackWorksListSeen,
 } from '../analytics';
-import { proUrl } from '../config';
 import { REC_RATIO_HINTS, REC_SVG_PREVIEWS, VIDEO_REC_SUPPORTED } from './constants';
 import { POST_CAPTION } from './useRecording';
 
@@ -110,13 +106,6 @@ export function RecSheet(props: RecSheetProps) {
   useEffect(() => () => {
     if (histUrlRef.current) URL.revokeObjectURL(histUrlRef.current);
   }, []);
-
-  // Pro-gate probe: the teaser is visible exactly while its section is —
-  // seen fires once per open (phase changes are the open/close signals).
-  useEffect(() => {
-    if (recPhase === 'choosing') trackProGateSeen('rec_chooser');
-    if (recPhase === 'result') trackProGateSeen('rec_result');
-  }, [recPhase]);
 
   // works_list_seen (2026-08-18, session guard): the result panel's
   // history list is ALSO a works-list sighting. Fires once per session on
@@ -257,19 +246,6 @@ export function RecSheet(props: RecSheetProps) {
               )}
             </div>
           </div>
-          {/* Pro gate: advertises the hosted Pro build without gating
-              anything — every free feature stays unlocked (that is the
-              contract of this block). Click = interest signal + opens
-              the Pro site in a new tab. */}
-          <a
-            className="pro-teaser"
-            href={proUrl('rec_chooser')}
-            target="_blank"
-            rel="noopener"
-            onClick={() => { trackProGateClicked('rec_chooser'); trackProGateOutbound('rec_chooser'); }}
-          >
-            🔒 <strong>Pro</strong>: Realtime MIDI out · HD export · commercial license
-          </a>
           <div className="rec-actions">
             <button className="rec-btn" onClick={() => setRecPhase('idle')}>Cancel</button>
             <button className="rec-btn primary" onClick={handleStartRecording}>Start · 3s countdown</button>
@@ -384,18 +360,6 @@ export function RecSheet(props: RecSheetProps) {
           <div className="rec-sheet-sub" style={{ marginTop: 8 }}>
             ✓ Auto-saved to this browser - "My recordings" appears under the start button on your next visit
           </div>
-          {/* Pro gate (result panel): the "keep the recording" moment —
-              the most natural place for the outbound door. Click =
-              signal + opens the Pro site, never a paywall. */}
-          <a
-            className="pro-teaser"
-            href={proUrl('rec_result')}
-            target="_blank"
-            rel="noopener"
-            onClick={() => { trackProGateClicked('rec_result'); trackProGateOutbound('rec_result'); }}
-          >
-            🔒 <strong>Pro</strong>: Realtime MIDI out · HD export · commercial license
-          </a>
         </div>
       )}
     </>

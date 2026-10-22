@@ -27,6 +27,8 @@ import { RecSheet } from './recording/RecSheet';
 import { RECORD_SECONDS, VIDEO_REC_SUPPORTED } from './recording/constants';
 import { WHATS_NEW, whatsNewActive, whatsNewDismissed, markWhatsNewDismissed } from './whatsNew';
 import WorksPanel, { RecordingsEntry, RecordingsIcon } from './components/WorksPanel';
+import { SongListPanel } from './components/SongListPanel';
+import type { GuidedSong } from './songs/songList';
 import { deleteWork, listWorks, type StoredWork } from './works/workStore';
 import {
   DIATONIC_CHORDS,
@@ -67,11 +69,9 @@ import {
   trackKeyboardFirstNote,
   trackKeyboardGuideShown,
   trackKeyboardGuideDismissed,
-  trackProGateClicked,
-  trackProGateOutbound,
   type KeyboardModeSource,
 } from './analytics';
-import { AFFILIATE_CARD_URL, ENABLE_AFFILIATE_CARD, proUrl } from './config';
+import { AFFILIATE_CARD_URL, ENABLE_AFFILIATE_CARD } from './config';
 // Config imports removed — external scripts feature not currently active
 
 /* Keys KeyboardSource maps — their default browser behavior (page
@@ -203,6 +203,23 @@ export default function App() {
   // count check needed here.
   const [recordingsOpen, setRecordingsOpen] = useState(false);
   const openRecordings = useCallback(() => setRecordingsOpen(true), []);
+
+  // ─── Song List Panel ──────────────────────────────────────────────────
+  const [showSongList, setShowSongList] = useState(false);
+  const [activeSongId, setActiveSongId] = useState<string | null>(null);
+
+  /** Load a guided song: apply its key + scale mode, then show the guide. */
+  const handleLoadSong = useCallback((song: GuidedSong) => {
+    setActiveSongId(song.id);
+    // Apply the song's key and scale to the synth
+    setSynthState((prev) => ({
+      ...prev,
+      keyOffset: song.keyOffset,
+      lockedMode: song.scaleMode === 'minor' ? 'diatonicMinor' : 'diatonicMajor',
+      mode: song.scaleMode === 'minor' ? 'diatonicMinor' : 'diatonicMajor',
+      leftHandMode: 'scaleLocked',
+    }));
+  }, []);
 
   // ─── Onboarding (first visit) ─────────────────────────────────────────
   // No popups on first visit — a newcomer's intent is to try, not to
@@ -1840,6 +1857,21 @@ export default function App() {
                 <RecordingsIcon size={19} />
               </button>
             )}
+            {/* Song list button — always visible, no Pro lock */}
+            <button
+              className="icon-btn mobile-collapse"
+              onClick={() => setShowSongList(!showSongList)}
+              data-tip="Songs — guided setlist, all free"
+              aria-label="Open song list"
+              style={showSongList ? {background:'rgba(0,255,204,0.12)',borderColor:'rgba(0,255,204,0.3)',color:'var(--neon-cyan)'} : {}}
+            >
+              {/* Music note glyph */}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 18V5l12-2v13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="6" cy="18" r="3" stroke="currentColor" strokeWidth="1.8"/>
+                <circle cx="18" cy="16" r="3" stroke="currentColor" strokeWidth="1.8"/>
+              </svg>
+            </button>
             <button className={`icon-btn ${showHelpPulse ? 'help-pulse' : ''}`} onClick={() => { if (!showHelp) trackHelpButtonClicked(); dismissHelpPulse(); setShowHelp(!showHelp); }} data-tip="How to play — hand gesture guide" style={showHelp ? {background:'rgba(0,255,204,0.12)',borderColor:'rgba(0,255,204,0.3)',color:'var(--neon-cyan)'} : {}}>?</button>
             <span className="divider" />
             {/* Record capsule — a horizontal bar with a red dot (REC), the most
@@ -1909,9 +1941,22 @@ export default function App() {
                         </g>
                       </svg>
                     </button>
+                    {/* Song list door — mobile ⋯ panel */}
+                    <button
+                      className={`icon-btn${showSongList ? ' active' : ''}`}
+                      onClick={() => { setMoreOpen(false); setShowSongList(!showSongList); }}
+                      data-tip="Songs setlist"
+                      aria-label="Open song list"
+                      style={showSongList ? {background:'rgba(0,255,204,0.12)',borderColor:'rgba(0,255,204,0.3)',color:'var(--neon-cyan)'} : {}}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M9 18V5l12-2v13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                        <circle cx="6" cy="18" r="3" stroke="currentColor" strokeWidth="1.8"/>
+                        <circle cx="18" cy="16" r="3" stroke="currentColor" strokeWidth="1.8"/>
+                      </svg>
+                    </button>
                     <button className="icon-btn" onClick={() => { setMoreOpen(false); setShowSettings(!showSettings); }} data-tip="Settings" style={showSettings ? {background:'rgba(0,255,204,0.12)',borderColor:'rgba(0,255,204,0.3)',color:'var(--neon-cyan)'} : {}}>
-                      {/* Same iOS-Settings cog as the desktop toolbar */}
-                      <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+                      {/* Same iOS-Settings cog as the desktop toolbar */}                      <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
                         <circle cx="12" cy="12" r="5.7" stroke="currentColor" strokeWidth="2.7" />
                         {Array.from({ length: 12 }, (_, i) => {
                           const a = (i * 30 * Math.PI) / 180;
@@ -1979,6 +2024,15 @@ export default function App() {
                 HelpModal). */}
         <WorksPanel works={works} onDelete={deleteWorkById} open={recordingsOpen} onOpenChange={setRecordingsOpen} />
 
+        {/* ─── Song List Panel — free guided setlist, no Pro lock ──── */}
+        {showSongList && (
+          <SongListPanel
+            onLoadSong={handleLoadSong}
+            activeSongId={activeSongId}
+            onClose={() => setShowSongList(false)}
+          />
+        )}
+
         {/* ─── Onboarding: hands-ready badge (first stable two-hand
                 detection, once per session, 3s) ───────────────────── */}
         {showHandsReady && (
@@ -2037,19 +2091,6 @@ export default function App() {
                   <span className="whatsnew-teach">
                     {whatsNewEntry.teach[keyboardMode ? 'keyboard' : 'camera'] ?? whatsNewEntry.teach.camera}
                   </span>
-                )}
-                {/* Outbound CTA (2026-10-17): the card stays a description —
-                    this is a labelled door the player chooses to follow. */}
-                {whatsNewEntry.cta && (
-                  <a
-                    className="whatsnew-cta"
-                    href={proUrl(whatsNewEntry.cta.content)}
-                    target="_blank"
-                    rel="noopener"
-                    onClick={() => { trackProGateClicked('whatsnew'); trackProGateOutbound('whatsnew'); }}
-                  >
-                    {whatsNewEntry.cta.label}
-                  </a>
                 )}
               </span>
             </div>
@@ -2240,31 +2281,7 @@ export default function App() {
                     modal shared with the toolbar entry). */}
                 <RecordingsEntry works={works} onOpen={openRecordings} />
 
-                {/* Hosted Pro version — the quiet permanent door on the
-                    landing (2026-10-17). One line, same weight as the
-                    recordings entry: the free site keeps saying "open and
-                    play", this only answers "is there more?". Always
-                    visible (unlike the 14-day What's-new cards) and
-                    UTM-tagged, so the free→pro handoff is measurable per
-                    surface. */}
-                <a
-                  className="pro-entry"
-                  href={proUrl('landing')}
-                  target="_blank"
-                  rel="noopener"
-                  onClick={() => { trackProGateClicked('landing'); trackProGateOutbound('landing'); }}
-                  data-tip="Hosted Pro version — realtime MIDI out, HD export, commercial license"
-                >
-                  {/* Sheen sweep: solid gold reads as a button (not a
-                      footnote) while the colour + fill keep it clearly
-                      separate from the cyan START button above — the two
-                      never compete for the same click. */}
-                  <span className="pro-entry-sheen" aria-hidden="true" />
-                  <span className="pro-entry-label">
-                    <strong>✨ PRO</strong> Realtime MIDI out · HD export · commercial license
-                  </span>
-                  <span className="pro-entry-arrow" aria-hidden="true">→</span>
-                </a>
+
               </>
             )}
             </div>
