@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gesture Synth</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- MediaPipe Hands — pinned to 0.4.1646424915 -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1640029074/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6.1629159505/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.js" crossorigin="anonymous"></script>
+
+  <!-- Tone.js — pinned, crossorigin required for COEP -->
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- ===== LANDING PAGE ===== -->
+  <div id="landing">
+    <video id="bg-video" autoplay muted playsinline></video>
+    <div class="landing-overlay"></div>
+
+    <div class="landing-content">
+      <p class="brand-label">GESTURE SYNTH</p>
+      <h1>make music with<br>your hands 🙌</h1>
+      <div class="landing-buttons">
+        <button id="btn-guide" class="btn-outline">📖 learn how to play</button>
+        <button id="btn-play" class="btn-filled">🔥 play now</button>
+      </div>
+      <p class="cam-note">Camera access is required to play.</p>
+    </div>
+
+    <p class="made-by">made by gesture synth</p>
+    <button id="landing-help" class="help-btn">?</button>
+  </div>
+
+  <!-- ===== SYNTH APP ===== -->
+  <div id="app" class="hidden">
+
+    <!-- Camera feed -->
+    <video id="cam" autoplay muted playsinline></video>
+    <canvas id="overlay-canvas"></canvas>
+
+    <!-- Top-left controls -->
+    <div class="controls-tl">
+      <div class="control-row">
+        <select id="key-select">
+          <option>A</option><option>A#</option><option>B</option>
+          <option>C</option><option>C#</option><option>D</option>
+          <option>D#</option><option>E</option><option>F</option>
+          <option>F#</option><option>G</option><option>G#</option>
+        </select>
+      </div>
+      <div class="control-row">
+        <select id="sound-select">
+          <option value="strings">Strings 🎻</option>
+          <option value="synth">Warm Synth</option>
+          <option value="piano">Piano</option>
+          <option value="pad">Pad</option>
+        </select>
+      </div>
+      <button id="open-guide" class="btn-guide-sm">Open Guide</button>
+    </div>
+
+    <!-- Top-right hamburger / volume indicator -->
+    <div class="controls-tr">
+      <div id="vol-bars">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar active"></div>
+        <div class="bar active"></div>
+        <div class="bar active"></div>
+      </div>
+    </div>
+
+    <!-- Bottom info: status text -->
+    <div id="status-bar">
+      <span id="chord-name">—</span>
+      <span id="chord-degree"></span>
+    </div>
+
+    <!-- Waveform canvas -->
+    <canvas id="wave-canvas"></canvas>
+
+    <!-- Help button -->
+    <button id="app-help" class="help-btn">?</button>
+
+    <p class="made-by">made by gesture synth</p>
+  </div>
+
+  <!-- ===== GUIDE MODAL ===== -->
+  <div id="guide-modal" class="modal hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="close-guide">✕</button>
+      <h2>How to Play</h2>
+      <p>Gesture Synth is an interactive musical instrument. Use your hands to create chords, melodies, and sounds in real-time!</p>
+
+      <h3>🤚 Left Hand — Chord Control</h3>
+      <table>
+        <tr><th>Gesture</th><th>Effect</th></tr>
+        <tr><td><strong>Tilt inward</strong></td><td>Major chord</td></tr>
+        <tr><td><strong>Tilt outward</strong></td><td>Minor chord</td></tr>
+        <tr><td>1 finger</td><td>Degree I</td></tr>
+        <tr><td>2 fingers</td><td>Degree II</td></tr>
+        <tr><td>3 fingers</td><td>Degree III</td></tr>
+        <tr><td>4 fingers</td><td>Degree IV</td></tr>
+        <tr><td>5 fingers</td><td>Degree V</td></tr>
+        <tr><td>Index + Pinky</td><td>Degree VI</td></tr>
+        <tr><td>Index + Pinky + Thumb</td><td>Degree VII</td></tr>
+      </table>
+
+      <h3>✋ Right Hand — Volume &amp; Filter</h3>
+      <table>
+        <tr><th>Position</th><th>Effect</th></tr>
+        <tr><td>Hand height</td><td>Controls volume</td></tr>
+        <tr><td>Hand open/close</td><td>Controls filter cutoff</td></tr>
+      </table>
+
+      <h3>🎵 Pitch Shift (Left Hand)</h3>
+      <ul>
+        <li>Top 50% of screen → Raise 1 semitone</li>
+        <li>Middle 30% → Normal pitch</li>
+        <li>Bottom 20% → Lower 1 semitone</li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
