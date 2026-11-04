@@ -1,6 +1,6 @@
-# Gesture Synth Weld
+# Musica
 
-> Public repo for [gesturesynthweld.com](https://gesturesynthweld.com) — the free, MIT-licensed build.
+> Public repo for [musica.app](https://musica.app) — the free, MIT-licensed build.
 
 Hand gesture-controlled music synthesizer. Left hand controls harmony (chords, key, mode), right hand controls expression (volume, tone, octave, chord style).
 

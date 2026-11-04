@@ -27,6 +27,9 @@ import { RecSheet } from './recording/RecSheet';
 import { RECORD_SECONDS, VIDEO_REC_SUPPORTED } from './recording/constants';
 import { WHATS_NEW, whatsNewActive, whatsNewDismissed, markWhatsNewDismissed } from './whatsNew';
 import WorksPanel, { RecordingsEntry, RecordingsIcon } from './components/WorksPanel';
+import { SongListPanel } from './components/SongListPanel';
+import { SongOverlay } from './components/SongOverlay';
+import { SONGS, type GuidedSong } from './songs/songList';
 import { deleteWork, listWorks, type StoredWork } from './works/workStore';
 import {
   DIATONIC_CHORDS,
@@ -67,11 +70,9 @@ import {
   trackKeyboardFirstNote,
   trackKeyboardGuideShown,
   trackKeyboardGuideDismissed,
-  trackProGateClicked,
-  trackProGateOutbound,
   type KeyboardModeSource,
 } from './analytics';
-import { AFFILIATE_CARD_URL, ENABLE_AFFILIATE_CARD, proUrl } from './config';
+import { AFFILIATE_CARD_URL, ENABLE_AFFILIATE_CARD } from './config';
 // Config imports removed — external scripts feature not currently active
 
 /* Keys KeyboardSource maps — their default browser behavior (page
@@ -80,7 +81,7 @@ import { AFFILIATE_CARD_URL, ENABLE_AFFILIATE_CARD, proUrl } from './config';
  * (2026-08-10) — the live set lives in the mappedKeysRef declared inside
  * the component (derived from `keymap`), not a static list here. */
 
-/* ─── Gesture Synth Weld — Two-Hand Division System ─────────────────── */
+/* ─── Musica — Two-Hand Division System ──────────────────────────────── */
 
 // Recording domain: constants (RECORD_SECONDS, VIDEO_REC_SUPPORTED,
 // REC_RATIO_*, REC_SVG_PREVIEWS) live in src/recording/constants.tsx;
@@ -203,6 +204,27 @@ export default function App() {
   // count check needed here.
   const [recordingsOpen, setRecordingsOpen] = useState(false);
   const openRecordings = useCallback(() => setRecordingsOpen(true), []);
+
+  // ─── Song List Panel ──────────────────────────────────────────────────
+  const [showSongList, setShowSongList] = useState(false);
+  const [activeSongId, setActiveSongId] = useState<string | null>(null);
+  const [songStep, setSongStep] = useState(0);
+
+  /** Load a guided song: apply its key + scale mode, then show the guide. */
+  const handleLoadSong = useCallback((song: GuidedSong) => {
+    setActiveSongId(song.id);
+    setSongStep(0);
+    // Apply the song's key and scale to the synth
+    setSynthState((prev) => ({
+      ...prev,
+      keyOffset: song.keyOffset,
+      lockedMode: song.scaleMode === 'minor' ? 'diatonicMinor' : 'diatonicMajor',
+      mode: song.scaleMode === 'minor' ? 'diatonicMinor' : 'diatonicMajor',
+      leftHandMode: 'scaleLocked',
+    }));
+    // Close the panel so the camera is fully visible
+    setShowSongList(false);
+  }, []);
 
   // ─── Onboarding (first visit) ─────────────────────────────────────────
   // No popups on first visit — a newcomer's intent is to try, not to
@@ -1718,7 +1740,14 @@ export default function App() {
         {/* ─── Top Toolbar — always visible ─────────────────────────── */}
         <div style={{ position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', zIndex: 20 }}>
           <div className="frost-toolbar" style={{ position: 'relative', top: 'auto', left: 'auto', transform: 'none', gap: '3px', padding: '6px 14px', fontSize: '0.6rem', whiteSpace: 'nowrap', overflow: 'visible' }}>
-            <span className="brand" style={{ fontSize: '0.6rem' }}>Gesture Synth Weld</span>
+            <span className="brand musica-brand">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 18V5l12-2v13" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="6" cy="18" r="3" stroke="currentColor" strokeWidth="2.2" />
+                <circle cx="18" cy="16" r="3" stroke="currentColor" strokeWidth="2.2" />
+              </svg>
+              Musica
+            </span>
             <button className={`mobile-collapse ${synthState.appMode === 'gesture' ? 'active' : ''}`} onClick={() => { trackSettingChanged('app_mode', 'gesture'); setSynthState(prev => ({ ...prev, appMode: 'gesture' })); }} data-tip="Two-hand chord mode — left hand picks harmony, right hand controls expression">Gesture</button>
             <button className={`mobile-collapse ${synthState.appMode === 'theremin' ? 'active' : ''}`} onClick={() => { trackSettingChanged('app_mode', 'theremin'); setSynthState(prev => ({ ...prev, appMode: 'theremin' })); }} data-tip="Theremin mode — right hand Y-axis = pitch, left hand Y-axis = volume">Theremin</button>
             <button className={`mobile-collapse ${synthState.appMode === 'monoPiano' ? 'active' : ''}`} onClick={() => { trackSettingChanged('app_mode', 'monoPiano'); setSynthState(prev => ({ ...prev, appMode: 'monoPiano' })); }} data-tip="Mono Piano mode — finger count selects a single note interval">Piano</button>
@@ -1840,6 +1869,21 @@ export default function App() {
                 <RecordingsIcon size={19} />
               </button>
             )}
+            {/* Song list button — always visible, no Pro lock */}
+            <button
+              className="icon-btn mobile-collapse"
+              onClick={() => setShowSongList(!showSongList)}
+              data-tip="Songs — guided setlist, all free"
+              aria-label="Open song list"
+              style={showSongList ? {background:'rgba(0,255,204,0.12)',borderColor:'rgba(0,255,204,0.3)',color:'var(--neon-cyan)'} : {}}
+            >
+              {/* Music note glyph */}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 18V5l12-2v13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="6" cy="18" r="3" stroke="currentColor" strokeWidth="1.8"/>
+                <circle cx="18" cy="16" r="3" stroke="currentColor" strokeWidth="1.8"/>
+              </svg>
+            </button>
             <button className={`icon-btn ${showHelpPulse ? 'help-pulse' : ''}`} onClick={() => { if (!showHelp) trackHelpButtonClicked(); dismissHelpPulse(); setShowHelp(!showHelp); }} data-tip="How to play — hand gesture guide" style={showHelp ? {background:'rgba(0,255,204,0.12)',borderColor:'rgba(0,255,204,0.3)',color:'var(--neon-cyan)'} : {}}>?</button>
             <span className="divider" />
             {/* Record capsule — a horizontal bar with a red dot (REC), the most
@@ -1909,9 +1953,22 @@ export default function App() {
                         </g>
                       </svg>
                     </button>
+                    {/* Song list door — mobile ⋯ panel */}
+                    <button
+                      className={`icon-btn${showSongList ? ' active' : ''}`}
+                      onClick={() => { setMoreOpen(false); setShowSongList(!showSongList); }}
+                      data-tip="Songs setlist"
+                      aria-label="Open song list"
+                      style={showSongList ? {background:'rgba(0,255,204,0.12)',borderColor:'rgba(0,255,204,0.3)',color:'var(--neon-cyan)'} : {}}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M9 18V5l12-2v13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                        <circle cx="6" cy="18" r="3" stroke="currentColor" strokeWidth="1.8"/>
+                        <circle cx="18" cy="16" r="3" stroke="currentColor" strokeWidth="1.8"/>
+                      </svg>
+                    </button>
                     <button className="icon-btn" onClick={() => { setMoreOpen(false); setShowSettings(!showSettings); }} data-tip="Settings" style={showSettings ? {background:'rgba(0,255,204,0.12)',borderColor:'rgba(0,255,204,0.3)',color:'var(--neon-cyan)'} : {}}>
-                      {/* Same iOS-Settings cog as the desktop toolbar */}
-                      <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+                      {/* Same iOS-Settings cog as the desktop toolbar */}                      <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
                         <circle cx="12" cy="12" r="5.7" stroke="currentColor" strokeWidth="2.7" />
                         {Array.from({ length: 12 }, (_, i) => {
                           const a = (i * 30 * Math.PI) / 180;
@@ -1979,6 +2036,34 @@ export default function App() {
                 HelpModal). */}
         <WorksPanel works={works} onDelete={deleteWorkById} open={recordingsOpen} onOpenChange={setRecordingsOpen} />
 
+        {/* ─── Song List Panel — free guided setlist, no Pro lock ──── */}
+        {showSongList && (
+          <SongListPanel
+            onLoadSong={handleLoadSong}
+            activeSongId={activeSongId}
+            songStep={songStep}
+            onStepChange={setSongStep}
+            onClose={() => setShowSongList(false)}
+          />
+        )}
+
+        {/* ─── Song Overlay — chord guide at top center while a song is
+                active. Shows regardless of whether the panel is open
+                so the player keeps the guide visible while playing. ── */}
+        {activeSongId && isRunning && (() => {
+          const song = SONGS.find((s) => s.id === activeSongId);
+          if (!song) return null;
+          return (
+            <SongOverlay
+              song={song}
+              step={songStep}
+              onStepChange={setSongStep}
+              onClose={() => setActiveSongId(null)}
+              currentDegree={synthState.isPlaying ? synthState.chordIndex : null}
+            />
+          );
+        })()}
+
         {/* ─── Onboarding: hands-ready badge (first stable two-hand
                 detection, once per session, 3s) ───────────────────── */}
         {showHandsReady && (
@@ -2037,19 +2122,6 @@ export default function App() {
                   <span className="whatsnew-teach">
                     {whatsNewEntry.teach[keyboardMode ? 'keyboard' : 'camera'] ?? whatsNewEntry.teach.camera}
                   </span>
-                )}
-                {/* Outbound CTA (2026-10-17): the card stays a description —
-                    this is a labelled door the player chooses to follow. */}
-                {whatsNewEntry.cta && (
-                  <a
-                    className="whatsnew-cta"
-                    href={proUrl(whatsNewEntry.cta.content)}
-                    target="_blank"
-                    rel="noopener"
-                    onClick={() => { trackProGateClicked('whatsnew'); trackProGateOutbound('whatsnew'); }}
-                  >
-                    {whatsNewEntry.cta.label}
-                  </a>
                 )}
               </span>
             </div>
@@ -2130,7 +2202,7 @@ export default function App() {
             {/* Brand anchored at a FIXED top position — it never moves
                 when the content below switches between button and block. */}
             <div className="camera-placeholder-brand">
-              <span className="camera-placeholder-brand-text">Gesture Synth</span>
+              <span className="camera-placeholder-brand-text">Musica</span>
               <div style={{ textAlign: 'center', fontSize: '0.7rem', color: 'rgba(255,110,180,0.7)', fontFamily: 'var(--font-body)', marginTop: '4px', letterSpacing: '0.08em' }}>created by Roschel</div>
             </div>
             <div className="camera-placeholder-content">
@@ -2240,31 +2312,7 @@ export default function App() {
                     modal shared with the toolbar entry). */}
                 <RecordingsEntry works={works} onOpen={openRecordings} />
 
-                {/* Hosted Pro version — the quiet permanent door on the
-                    landing (2026-10-17). One line, same weight as the
-                    recordings entry: the free site keeps saying "open and
-                    play", this only answers "is there more?". Always
-                    visible (unlike the 14-day What's-new cards) and
-                    UTM-tagged, so the free→pro handoff is measurable per
-                    surface. */}
-                <a
-                  className="pro-entry"
-                  href={proUrl('landing')}
-                  target="_blank"
-                  rel="noopener"
-                  onClick={() => { trackProGateClicked('landing'); trackProGateOutbound('landing'); }}
-                  data-tip="Hosted Pro version — realtime MIDI out, HD export, commercial license"
-                >
-                  {/* Sheen sweep: solid gold reads as a button (not a
-                      footnote) while the colour + fill keep it clearly
-                      separate from the cyan START button above — the two
-                      never compete for the same click. */}
-                  <span className="pro-entry-sheen" aria-hidden="true" />
-                  <span className="pro-entry-label">
-                    <strong>✨ PRO</strong> Realtime MIDI out · HD export · commercial license
-                  </span>
-                  <span className="pro-entry-arrow" aria-hidden="true">→</span>
-                </a>
+
               </>
             )}
             </div>
@@ -2275,7 +2323,7 @@ export default function App() {
         {error && (
           <div className="camera-placeholder error-state">
             <div className="camera-placeholder-brand">
-              <span className="camera-placeholder-brand-text">Gesture Synth</span>
+              <span className="camera-placeholder-brand-text">Musica</span>
               <div style={{ textAlign: 'center', fontSize: '0.7rem', color: 'rgba(255,110,180,0.7)', fontFamily: 'var(--font-body)', marginTop: '4px', letterSpacing: '0.08em' }}>created by Roschel</div>
             </div>
             <div className="camera-error-message">{error}</div>
@@ -2310,7 +2358,7 @@ export default function App() {
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                   </svg>
-                  <span className="err-url">gesturesynthweld.com</span>
+                  <span className="err-url">musica.app</span>
                   <span className="err-dots">⋯</span>
                 </div>
                 <div className="err-steps">

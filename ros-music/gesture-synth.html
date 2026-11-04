@@ -23,35 +23,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0a0a1a" />
 
-  <title>Gesture Synth — Play Music with Your Hands, No Hardware</title>
+  <title>Musica — Play Music with Your Hands, No Hardware</title>
   <meta name="description" content="What is a gesture synth? An instrument you play with hand gestures. Play free in your browser — webcam only, no hardware, no downloads." />
   <meta name="keywords" content="gesture synth, what is a gesture synth, hand gesture synth, gesture synth app, play gesture synth online, browser gesture instrument" />
-  <meta name="author" content="Gesture Synth Weld" />
+  <meta name="author" content="Roschel" />
   <!-- Author identity — Google authorship signal (free; matches the GitHub repo owner) -->
   <link rel="author" href="https://github.com/rainbow686" />
-  <link rel="canonical" href="https://gesturesynthweld.com/gesture-synth" />
+  <link rel="canonical" href="https://musica.app/gesture-synth" />
   <!-- Model CDN: warm the DNS+TCP+TLS connection while the player reads the
        page, so the first camera start skips a full RTT (crossorigin needed
        for the cross-origin fetch of wasm/task files). -->
-  <link rel="preconnect" href="https://assets.gesturesynthweld.com" crossorigin />
+  <link rel="preconnect" href="https://assets.musica.app" crossorigin />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
   <link rel="shortcut icon" href="/favicon.svg?v=2" />
   <link rel="apple-touch-icon" href="/favicon.svg?v=2" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Gesture Synth — Play Music with Your Hands, No Hardware" />
+  <meta property="og:title" content="Musica — Play Music with Your Hands, No Hardware" />
   <meta property="og:description" content="A gesture synth turns hand movements into music. This one runs free in your browser — webcam only, nothing to install." />
-  <meta property="og:url" content="https://gesturesynthweld.com/gesture-synth" />
-  <meta property="og:site_name" content="Gesture Synth Weld" />
-  <meta property="og:image" content="https://gesturesynthweld.com/og-image.png" />
+  <meta property="og:url" content="https://musica.app/gesture-synth" />
+  <meta property="og:site_name" content="Musica" />
+  <meta property="og:image" content="https://musica.app/og-image.png" />
   <meta property="og:locale" content="en_US" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Gesture Synth — Play Music with Your Hands, No Hardware" />
+  <meta name="twitter:title" content="Musica — Play Music with Your Hands, No Hardware" />
   <meta name="twitter:description" content="Turn hand movements into music. Free in your browser — webcam only, nothing to install." />
-  <meta name="twitter:image" content="https://gesturesynthweld.com/og-image.png" />
+  <meta name="twitter:image" content="https://musica.app/og-image.png" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -63,8 +63,8 @@
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "Gesture Synth Weld",
-    "url": "https://gesturesynthweld.com/gesture-synth",
+    "name": "Musica",
+    "url": "https://musica.app/gesture-synth",
     "description": "A browser-based hand gesture music synthesizer with two-hand control. Left hand sets harmony (key, scale, major/minor), right hand controls expression (chord type, volume, tone). Includes 3 modes, arpeggiator, auto bass, and audio/video recording.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any",
@@ -85,7 +85,7 @@
       "Theremin mode: continuous pitch and volume control with both hands",
       "Mono Piano mode: single-note melody with finger-count intervals"
     ],
-    "screenshot": "https://gesturesynthweld.com/og-image.png",
+    "screenshot": "https://musica.app/og-image.png",
     "softwareVersion": "2.0.0",
     "license": "https://opensource.org/licenses/MIT"
   }
@@ -102,7 +102,7 @@
         "name": "What is a gesture synth?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "A gesture synth is a musical instrument played with hand or body gestures instead of keys: a sensor reads your movements and software turns them into sound. Gesture Synth Weld is a free browser-based gesture synth — your webcam tracks your hands and each finger maps to a different note."
+          "text": "A gesture synth is a musical instrument played with hand or body gestures instead of keys: a sensor reads your movements and software turns them into sound. Musica is a free browser-based gesture synth — your webcam tracks your hands and each finger maps to a different note."
         }
       },
       {
@@ -126,7 +126,7 @@
         "name": "What browsers are supported?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Gesture Synth Weld works in any modern browser that supports Web Audio API and getUserMedia — including Chrome 90+, Firefox 90+, Edge 90+, and Safari 15+. For the best hand tracking experience, Chrome or Edge is recommended."
+          "text": "Musica works in any modern browser that supports Web Audio API and getUserMedia — including Chrome 90+, Firefox 90+, Edge 90+, and Safari 15+. For the best hand tracking experience, Chrome or Edge is recommended."
         }
       },
       {
@@ -134,7 +134,7 @@
         "name": "Can I record my performance?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! Click the Record button to start capturing your performance (up to 120 seconds). A 3-2-1 countdown gets you ready, and a 3-2-1 wrap-up warns you before the recording ends. Choose from three modes: audio only, full video (camera with neon hand skeleton), or skeleton animation without the camera feed — plus an aspect ratio for social platforms (9:16 for TikTok/Reels/Shorts, 16:9 for YouTube, 1:1 for Instagram). After recording, download the file or share it straight to your apps from the mobile share sheet (the share message carries our brand and gesturesynthweld.com). Your camera feed is never uploaded to any server."
+          "text": "Yes! Click the Record button to start capturing your performance (up to 120 seconds). A 3-2-1 countdown gets you ready, and a 3-2-1 wrap-up warns you before the recording ends. Choose from three modes: audio only, full video (camera with neon hand skeleton), or skeleton animation without the camera feed — plus an aspect ratio for social platforms (9:16 for TikTok/Reels/Shorts, 16:9 for YouTube, 1:1 for Instagram). After recording, download the file or share it straight to your apps from the mobile share sheet (the share message carries our brand and musica.app). Your camera feed is never uploaded to any server."
         }
       },
       {
@@ -142,7 +142,7 @@
         "name": "What chords can I play?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Gesture Synth Weld supports all 12 keys (C through B) with two right-hand modes. In Finger Layout mode: 1 finger = triad, 2 fingers = 1st inversion, 3 fingers = 7th chord, 4 fingers = 9th chord. In Fixed Chord mode, choose from 8 chord types: Major Triad, Major 1st Inversion, Minor Triad, Diminished, Sus2, Sus4, Major 7th, and Dominant 7th. Lock to a fixed major or minor mode, or enable Scale+Tilt to switch between them with left-hand wrist tilt."
+          "text": "Musica supports all 12 keys (C through B) with two right-hand modes. In Finger Layout mode: 1 finger = triad, 2 fingers = 1st inversion, 3 fingers = 7th chord, 4 fingers = 9th chord. In Fixed Chord mode, choose from 8 chord types: Major Triad, Major 1st Inversion, Minor Triad, Diminished, Sus2, Sus4, Major 7th, and Dominant 7th. Lock to a fixed major or minor mode, or enable Scale+Tilt to switch between them with left-hand wrist tilt."
         }
       },
       {
@@ -155,26 +155,26 @@
       },
       {
         "@type": "Question",
-        "name": "What makes Gesture Synth Weld different from other gesture synthesizers?",
+        "name": "What makes Musica different from other gesture synthesizers?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Gesture Synth Weld features a unique two-hand division system: your left hand controls harmony (key selection, scale degree, major/minor toggle) while your right hand controls expression (chord complexity, volume, tone). Unlike basic gesture synths, it includes an arpeggiator for harp-like sweeps, an auto bass generator for low-end foundation, support for 7 diatonic chords with VI/VII special gestures, 8 fixed chord styles, and built-in MP4/M4A recording. It's also open source under the MIT license."
+          "text": "Musica features a unique two-hand division system: your left hand controls harmony (key selection, scale degree, major/minor toggle) while your right hand controls expression (chord complexity, volume, tone). Unlike basic gesture synths, it includes an arpeggiator for harp-like sweeps, an auto bass generator for low-end foundation, support for 7 diatonic chords with VI/VII special gestures, 8 fixed chord styles, and built-in MP4/M4A recording. It's also open source under the MIT license."
         }
       },
       {
         "@type": "Question",
-        "name": "Is Gesture Synth Weld free?",
+        "name": "Is Musica free?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! Gesture Synth Weld is free to use. We support the development and hosting of this tool through non-intrusive advertising. No registration, no sign-up, no paywall — just open and play."
+          "text": "Yes! Musica is free to use. We support the development and hosting of this tool through non-intrusive advertising. No registration, no sign-up, no paywall — just open and play."
         }
       },
       {
         "@type": "Question",
-        "name": "Is Gesture Synth Weld the same as a \"gesture synth\"?",
+        "name": "Is Musica the same as a \"gesture synth\"?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Gesture Synth Weld is one specific gesture synth: a two-hand browser instrument — left hand harmony, right hand expression — with recording built in. \"Gesture synth\" is the generic category, and it includes hardware gloves, DIY kits and DAW plugins too."
+          "text": "Musica is one specific gesture synth: a two-hand browser instrument — left hand harmony, right hand expression — with recording built in. \"Gesture synth\" is the generic category, and it includes hardware gloves, DIY kits and DAW plugins too."
         }
       },
       {
@@ -613,8 +613,8 @@
        instrument. Play = one click, starts the instrument in place. -->
   <header class="seo-hero">
     <span class="seo-eyebrow">PLAY IN YOUR BROWSER — NO HARDWARE</span>
-    <h1>Gesture Synth — Play Music with Your Hands, No Hardware</h1>
-    <p class="seo-lede">A <strong>gesture synth</strong> — also searched as <strong>hand gesture synth</strong> — is an instrument you play with hand movements instead of keys: a camera reads your hands, software turns motion into sound. <strong>Gesture Synth Weld</strong> is a free one that runs entirely in your browser: webcam on, hands up, music out.</p>
+    <h1>Musica — Play Music with Your Hands, No Hardware</h1>
+    <p class="seo-lede">A <strong>gesture synth</strong> — also searched as <strong>hand gesture synth</strong> — is an instrument you play with hand movements instead of keys: a camera reads your hands, software turns motion into sound. <strong>Musica</strong> is a free one that runs entirely in your browser: webcam on, hands up, music out.</p>
     <div>
       <button class="seo-play-btn" data-seo-play>▶ Play now — it's free</button>
       <a class="seo-play-btn ghost" href="#what-is" style="text-decoration:none;">What is it? ↓</a>
@@ -683,7 +683,7 @@
           hand, the volume rises. Spread your fingers, the chord opens up.
         </p>
         <p>
-          <strong>Gesture Synth Weld</strong> is a browser-based gesture synth with a fixed two-hand
+          <strong>Musica</strong> is a browser-based gesture synth with a fixed two-hand
           division: your <strong>left hand picks the harmony</strong> (finger count selects scale degrees
           I–VII, wrist tilt picks major or minor) while your <strong>right hand shapes the
           expression</strong> (height is volume, tilt is tone, finger count sets chord thickness).
@@ -721,7 +721,7 @@
         <h2>🎛 What can a gesture synth do?</h2>
         <p>
           A gesture synth turns body movement into sound. Browser-based gesture synths use your
-          webcam to track your hands — no hardware controller needed. Gesture Synth Weld pushes
+          webcam to track your hands — no hardware controller needed. Musica pushes
           the format further: each finger becomes a musical command, your left hand picks harmony
           while your right hand shapes expression, and everything runs live in the browser with
           zero installs.
@@ -821,7 +821,7 @@
           <summary>What is a gesture synth?</summary>
           <p>
             A gesture synth is a musical instrument played with hand or body gestures instead of keys:
-            a sensor reads your movements and software turns them into sound. Gesture Synth Weld is a
+            a sensor reads your movements and software turns them into sound. Musica is a
             free browser-based gesture synth — the instrument at the top of this page. Webcam on,
             hands up, music out.
           </p>
@@ -849,7 +849,7 @@
         <details class="faq-item">
           <summary>What browsers are supported?</summary>
           <p>
-            Gesture Synth Weld works in any modern browser that supports the Web Audio API and
+            Musica works in any modern browser that supports the Web Audio API and
             getUserMedia — including Chrome 90+, Firefox 90+, Edge 90+, and Safari 15+.
             For the best hand tracking experience, Chrome or Edge is recommended since they
             support MediaPipe's WebGL2 backend most efficiently.
@@ -869,14 +869,14 @@
             default to a virtual device that records silence), and balance <strong>voice vs chords</strong> with
             the recording-mix slider — headphones give the cleanest mix. After recording, download the
             file — or on mobile, share it straight to your apps from the share sheet (the share message
-            carries our brand and gesturesynthweld.com). Your camera feed is never uploaded to any server.
+            carries our brand and musica.app). Your camera feed is never uploaded to any server.
           </p>
         </details>
 
         <details class="faq-item">
           <summary>What chords can I play?</summary>
           <p>
-            Gesture Synth Weld supports all 12 keys (C through B) with two right-hand modes.
+            Musica supports all 12 keys (C through B) with two right-hand modes.
             In <strong>Finger Layout mode</strong>: 1 finger = triad, 2 fingers = 1st inversion,
             3 fingers = 7th chord, 4 fingers = 9th chord. In <strong>Fixed Chord mode</strong>,
             choose from 8 chord types: Major Triad, Major 1st Inversion, Minor Triad, Diminished,
@@ -904,9 +904,9 @@
         </details>
 
         <details class="faq-item">
-          <summary>What makes Gesture Synth Weld different from other gesture synthesizers?</summary>
+          <summary>What makes Musica different from other gesture synthesizers?</summary>
           <p>
-            Gesture Synth Weld features a unique <strong>two-hand division system</strong>: your
+            Musica features a unique <strong>two-hand division system</strong>: your
             left hand controls harmony (key selection, scale degree, major/minor toggle) while your
             right hand controls expression (chord complexity, volume, tone, octave). Unlike basic
             gesture synths, it includes an <strong>arpeggiator</strong> for harp-like sweeps, an
@@ -918,9 +918,9 @@
         </details>
 
         <details class="faq-item">
-          <summary>Is Gesture Synth Weld free?</summary>
+          <summary>Is Musica free?</summary>
           <p>
-            Yes! Gesture Synth Weld is free to use. We support the development and hosting of
+            Yes! Musica is free to use. We support the development and hosting of
             this tool through non-intrusive advertising. No registration, no sign-up, no paywall
             — just open and play. The source code is also available
             <a href="https://github.com/rainbow686/gesture-synth-weld" target="_blank" rel="noopener" style="color:#00ffcc">on GitHub</a>
@@ -929,9 +929,9 @@
         </details>
 
         <details class="faq-item">
-          <summary>Is Gesture Synth Weld the same as a "gesture synth"?</summary>
+          <summary>Is Musica the same as a "gesture synth"?</summary>
           <p>
-            <strong>Gesture Synth Weld</strong> is one specific gesture synth: a two-hand browser
+            <strong>Musica</strong> is one specific gesture synth: a two-hand browser
             instrument — left hand harmony, right hand expression — with recording built in.
             "Gesture synth" is the generic category, and it includes hardware gloves, DIY kits
             and DAW plugins too. If you searched the generic term, this page is the free
@@ -959,7 +959,7 @@
   </div>
 
   <footer class="site-footer">
-    <p>Gesture Synth Weld — the free browser gesture synth.
+    <p>Musica — the free browser gesture synth.
       <a href="/guide">Tutorial</a> · Open Source under the
       <a href="https://github.com/rainbow686/gesture-synth-weld" target="_blank" rel="noopener">MIT License</a>
       · <a href="https://github.com/rainbow686/gesture-synth-weld" target="_blank" rel="noopener">Star us on GitHub ⭐</a>.
@@ -972,8 +972,8 @@
       <a href="/privacy">Privacy</a>
       <a href="/terms">Terms</a>
       <a href="/contact">Contact</a>
-      <a href="https://gesturesynthweld.com">gesturesynthweld.com</a>
-      <a href="https://gesturesynthweld.app/?utm_source=free-site&amp;utm_medium=in-app&amp;utm_campaign=wave-2026-10&amp;utm_content=footer" target="_blank" rel="noopener">Pro</a>
+      <a href="https://musica.app">musica.app</a>
+      <a href="https://musica.app/?utm_source=free-site&amp;utm_medium=in-app&amp;utm_campaign=wave-2026-10&amp;utm_content=footer" target="_blank" rel="noopener">Pro</a>
     </div>
   </footer>
 </body>

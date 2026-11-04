@@ -58,7 +58,7 @@ export function drawMetalBrand(
   y: number,
   size: number,
 ): void {
-  const text = 'GESTURE SYNTH WELD';
+  const text = 'MUSICA';
   ctx.font = `800 ${size}px Orbitron, monospace`;
   ctx.textAlign = 'left';
   // subtle dark drop for a raised, dimensional look

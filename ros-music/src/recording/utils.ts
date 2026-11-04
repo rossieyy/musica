@@ -44,7 +44,7 @@ export function makeCoverBlob(): Promise<Blob> {
 
   // brand: metal wordmark centered — auto-shrink so it never touches the edges
   // (target width = 80% of the canvas, leaving breathing room on both sides)
-  const text = 'GESTURE SYNTH WELD';
+  const text = 'MUSICA';
   let size = 44;
   ctx.font = `800 ${size}px Orbitron, monospace`;
   ctx.textAlign = 'center';

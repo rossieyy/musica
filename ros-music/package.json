@@ -18,7 +18,7 @@
     "mediapipe",
     "synthesizer"
   ],
-  "author": "Gesture Synth Weld",
+  "author": "Roschel",
   "license": "MIT",
   "dependencies": {
     "@mediapipe/tasks-vision": "1.0.1",

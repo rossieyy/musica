@@ -25,7 +25,7 @@ export const AFFILIATE_CARD_URL = 'https://www.soundtrap.com/';
  * process; keep them in sync when this changes. */
 
 /** Hosted Pro build (root URL — the site routes from there). */
-export const PRO_URL = 'https://gesturesynthweld.app/';
+export const PRO_URL = 'https://musica.app/';
 
 /** Campaign tag for outbound links from the free site. */
 export const PRO_UTM_CAMPAIGN = 'wave-2026-10';

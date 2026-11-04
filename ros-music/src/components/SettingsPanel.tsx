@@ -11,8 +11,7 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import type { ArpSpeed, LeftHandMode, RightHandMode, SynthState } from '../types';
 import { CHORD_STYLE_OPTIONS, type ChordStyle } from '../chords';
-import { trackProGateClicked, trackProGateOutbound, trackProGateSeen, trackSettingChanged } from '../analytics';
-import { proUrl } from '../config';
+import { trackSettingChanged } from '../analytics';
 import { ACTION_META, ACTION_ORDER, DEFAULT_KEYMAP, KEYMAP_PRESETS, displayKey, isAssignableKey, matchingPresetId, type KbAction } from '../input/keymap';
 
 export interface SettingsPanelProps {
@@ -55,10 +54,6 @@ export function SettingsPanel({
   // Rebind capture: which action is armed to receive the next keypress.
   const [listeningFor, setListeningFor] = useState<KbAction | null>(null);
   const [conflictMsg, setConflictMsg] = useState<string | null>(null);
-
-  // Pro-gate probe: seen = panel open (mount is the open signal — App
-  // conditionally renders the panel).
-  useEffect(() => { trackProGateSeen('settings'); }, []);
 
   useEffect(() => {
     if (!listeningFor) return;
@@ -294,19 +289,6 @@ export function SettingsPanel({
         </div>
       </div>
       )}
-      {/* Pro gate: advertises the hosted Pro build without gating
-          anything — every free feature stays unlocked (that is the
-          contract of this block). Click = interest signal + opens the
-          Pro site in a new tab. */}
-      <a
-        className="pro-teaser"
-        href={proUrl('settings')}
-        target="_blank"
-        rel="noopener"
-        onClick={() => { trackProGateClicked('settings'); trackProGateOutbound('settings'); }}
-      >
-        🔒 <strong>Pro</strong>: Realtime MIDI out · HD export · commercial license
-      </a>
     </div>
   );
 }
